@@ -11,12 +11,10 @@ router.get('/', function(req, res, next) {
     if (req.query.page) {
         res.json(lista);
     } else if (req.query.nro_documento) {
-        console.log(req.query.nro_documento);
         var listPacients = {};
         var index = 0;
-        console.log(lista.results);
-        for (index; index < lista.results; index++) {
-            if (lista.results[index].nro_documento === Int.parse(req.query.nro_documento)) {
+        for (index; index < lista.results.length; index++) {
+            if (lista.results[index].nro_documento === req.query.nro_documento) {
                 listPacients  = lista.results[index];
                 break;
             }
