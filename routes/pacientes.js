@@ -3,8 +3,10 @@
  */
 var express = require('express');
 var router = express.Router();
-var mocks = require('../models/mocksPacientes');
-var lista = mocks.listaPacientes;
+var mocksPacientes = require('../models/mocksPacientes');
+var mockTurnos = require('../models/mocksAppointments');
+var lista = mocksPacientes.listaPacientes;
+
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
@@ -53,12 +55,18 @@ router.get('/:patientId', function (req, res, next) {
 });
 
 router.get('/:patientId/appointments', function (req, res, next) {
-    var appointments = [];
-    var result = [];
-    for(var i = 0; i < result.length; i++){
-        if(result[i].speciality === req.query.medicalSpeciality) {
-            appointments.push(result[i]);
-        }
+    var appointments = mockTurnos.findBySpecialityAndPatient(req.query.medicalSpeciality, req.query.patientId);
+    // var result = [];
+    // for(var i = 0; i < result.length; i++){
+    //     if(result[i].speciality === req.query.medicalSpeciality) {
+    //         appointments.push(result[i]);
+    //     }
+    // }
+    if (!appointments) {
+        next({
+            "error_description": "error sigehos.",
+            "error": "error busqueda de turnos por paciente"
+        });
     }
     res.json(appointments);
 

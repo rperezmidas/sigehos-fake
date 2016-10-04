@@ -8,17 +8,40 @@ var mocks = require('../models/mocksAppointments');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-    var appointments = [];
+    var appointments = mocks.getAppointments();
+    if (!appointments) {
+        next({
+            "error_description": "error sigehos.",
+            "error": "error busqueda de turnos"
+        });
+    }
     res.json(appointments);
 });
+
 router.get('/:appointmentId', function(req, res, next) {
-    var appointments = [{id:1}];
-    res.json(appointments[0]);
+    var appointments = mocks.findById(req.params.appointmentId);
+    if (!appointments) {
+        next({
+            "error_description": "error sigehos communication.",
+            "error": "error busqueda de turno"
+        });
+    }
+    res.json(appointments);
 });
+
 router.put('/:appointmentId', function(req, res, next) {
-    var appointments = [{id:1}];
-    res.json(appointments[0]);
+    var response = mocks.createAppointment(req.body.patientId);
+    if (!response) {
+        return next({
+            "error_description": "error sigehos communication.",
+            "error": "error creacion de turno"
+        });
+
+    }
+    res.json(response);
+    return false;
 });
+
 router.post('/:appointmentId/confirm', function(req, res, next) {
     if (!req.body) {
         next({
@@ -32,9 +55,7 @@ router.post('/:appointmentId/confirm', function(req, res, next) {
             "error_description": "appointment could not be confirm",
             "error": "invalid_request"
         });
-
     }
-    console.log(confirm);
     res.json(confirm);
     return false;
 });

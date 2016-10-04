@@ -46,6 +46,15 @@ var searchAppointmentBySpeciality  = function(speciality){
     }
     return patApp;
 };
+var searchAppointmentBySpecialityAndPatient  = function(speciality, patient){
+    var patApp = [];
+    for(var i = 0 ; i < storedAppointments.length; i++){
+        if(storedAppointments[i].speciality === speciality && patient === storedAppointments[i].patient_id){
+            patApp.push(storedAppointments[i]);
+        }
+    }
+    return patApp;
+};
 
 var searchAppointmentByPatientId  = function(patientId){
     var patApp = [];
@@ -71,6 +80,19 @@ var createAppointmentForPatient = (patientId) => {
     for(var i = 0 ; i < patients_id.length; i++){
         if(patients_id[i] === patientId){
             var appo = searchUnUsedAppointment();
+            if(appo){
+                appo.patient_id = patientId;
+                return appo;
+            }
+        }
+    }
+    return null;
+};
+
+var createAppointmentForPatientByAppId = (appId, patientId) => {
+    for(var i = 0 ; i < patients_id.length; i++){
+        if(patients_id[i] === patientId){
+            var appo = findById(appId);
             if(appo){
                 appo.patient_id = patientId;
                 return appo;
@@ -106,8 +128,10 @@ var searchAppointmentById  = function(id){
 module.exports = {
     getAppointments : storedAppointments,
     findBySpeciality : searchAppointmentBySpeciality,
+    findBySpecialityAndPatient : searchAppointmentBySpecialityAndPatient,
     findByPatientId : searchAppointmentByPatientId,
     findById : searchAppointmentById,
     createAppointment : createAppointmentForPatient,
+    createAppointmentByApp : createAppointmentForPatientByAppId,
     confirmAppointment : confirmAppointment
 }
