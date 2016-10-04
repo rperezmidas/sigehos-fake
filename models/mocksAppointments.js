@@ -19,16 +19,28 @@ var Appointment = function() {
     }
 };
 
+var AppointmentCreation = function() {
+    this.appointment = {
+        id : appointmentCount ++,
+        creation_date : new Date().toISOString(),
+        confirm : false,
+        speciality : especiality[Math.round(Math.random()*6)+1 ],
+    }
+};
+
 (() =>{
     for(var i = 0 ; i < 100; i++){
         storedAppointments.push (new Appointment().appointment);
+    }
+    for(var i = 0 ; i < 50; i++){
+        storedAppointments.push (new AppointmentCreation().appointment);
     }
 })();
 
 var searchAppointmentBySpeciality  = function(speciality){
     var patApp = [];
     for(var i = 0 ; i < storedAppointments.length; i++){
-        if(storedAppointments[i].speciality === speciality){
+        if(storedAppointments[i].speciality === speciality && storedAppointments[i].patient_id){
             patApp.push(storedAppointments[i]);
         }
     }
@@ -45,8 +57,45 @@ var searchAppointmentByPatientId  = function(patientId){
     return patApp;
 };
 
+var searchUnUsedAppointment = () => {
+    var result = null;
+    for(var i = 0 ; i < storedAppointments.length; i++){
+        if(!storedAppointments[i].patient_id){
+            result = storedAppointments[i];
+        }
+    }
+    return result;
+}
+
+var createAppointmentForPatient = (patientId) => {
+    for(var i = 0 ; i < patients_id.length; i++){
+        if(patients_id[i] === patientId){
+            var appo = searchUnUsedAppointment();
+            if(appo){
+                appo.patient_id = patientId;
+                return appo;
+            }
+        }
+    }
+    return null;
+};
+
+var confirmAppointment = (id) => {
+    var result = null;
+    for(var i = 0 ; i < storedAppointments.length; i++){
+        if(storedAppointments[i].id === id){
+            storedAppointments[i].confirm = true;
+            result = storedAppointments[i];
+        }
+    }
+    return result;
+};
+
+
 module.exports = {
-    appointments : storedAppointments,
+    getAppointments : storedAppointments,
     findBySpeciality : searchAppointmentBySpeciality,
-    findByPatientId : searchAppointmentByPatientId
+    findByPatientId : searchAppointmentByPatientId,
+    createAppointment : createAppointmentForPatient,
+    confirmAppointment : confirmAppointment
 }
