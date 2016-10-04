@@ -29,8 +29,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(require('./routes/authenticacion'));
 app.use('/', routes);
 app.use('/users', users);
-app.use('/sigehos/padron/api/v2/pacientes/', pacientes);
-app.use('/turnos', turnos);
+app.use('/sigehos/padron/api/v2/pacientes', pacientes);
+app.use('/sigehos/turnos/api/v2/turnos', turnos);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

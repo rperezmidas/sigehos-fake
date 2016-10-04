@@ -8,20 +8,23 @@ var lista = mocks.listaPacientes;
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
+    //get all patients
     if (req.query.page) {
         res.json(lista);
         res.send();
-    } else if (req.query.nro_documento) {
-        var listPacients = {};
+    }
+    //Get by dni
+    else if (req.query.nro_documento) {
+        var listPacients = {count:0, results:[]};
         var index = 0;
         for (index; index < lista.results.length; index++) {
             if (lista.results[index].nro_documento === req.query.nro_documento) {
-                listPacients  = lista.results[index];
-                break;
+                listPacients.results.push(lista.results[index]);
+                listPacients.count++;
             }
         }
         res.json(listPacients);
-    }
+    }//return list
     else {
         res.json(lista);
     }
@@ -46,6 +49,18 @@ router.get('/:patientId', function (req, res, next) {
         res.json({});
     }
 
+
+});
+
+router.get('/:patientId/appointments', function (req, res, next) {
+    var appointments = [];
+    var result = [];
+    for(var i = 0; i < result.length; i++){
+        if(result[i].speciality === req.query.medicalSpeciality) {
+            appointments.push(result[i]);
+        }
+    }
+    res.json(appointments);
 
 });
 
