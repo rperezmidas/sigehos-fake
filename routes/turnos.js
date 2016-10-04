@@ -8,7 +8,8 @@ var mocks = require('../models/mocksAppointments');
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-    var appointments = mocks.getAppointments();
+
+    var appointments = mocks.getAppointments;
     if (!appointments) {
         next({
             "error_description": "error sigehos.",
