@@ -121,7 +121,7 @@ var searchAppointmentById  = function(id){
             result = storedAppointments[i];
         }
     }
-    return patApp;
+    return result;
 };
 
 

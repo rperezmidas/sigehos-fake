@@ -20,14 +20,17 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/:appointmentId', function(req, res, next) {
-    var appointments = mocks.findById(req.params.appointmentId);
+
+    var appointments = mocks.findById(parseInt(req.params.appointmentId));
     if (!appointments) {
         next({
             "error_description": "error sigehos communication.",
             "error": "error busqueda de turno"
         });
-    }
+    }else{
+
     res.json(appointments);
+    }
 });
 
 router.put('/:appointmentId', function(req, res, next) {
