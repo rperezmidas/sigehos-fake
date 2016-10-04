@@ -91,11 +91,23 @@ var confirmAppointment = (id) => {
     return result;
 };
 
+var searchAppointmentById  = function(id){
+    var result = null;
+    for(var i = 0 ; i < storedAppointments.length; i++){
+        if(storedAppointments[i].id === id){
+
+            result = storedAppointments[i];
+        }
+    }
+    return patApp;
+};
+
 
 module.exports = {
     getAppointments : storedAppointments,
     findBySpeciality : searchAppointmentBySpeciality,
     findByPatientId : searchAppointmentByPatientId,
+    findById : searchAppointmentById,
     createAppointment : createAppointmentForPatient,
     confirmAppointment : confirmAppointment
 }
