@@ -102,12 +102,14 @@ var createAppointmentForPatientByAppId = (appId, patientId) => {
     return null;
 };
 
-var confirmedAppointment = (id) => {
+var confirmedAppointment = (id,patient_id) => {
     var result = null;
     for(var i = 0 ; i < storedAppointments.length; i++){
         if(storedAppointments[i].id === id){
-            storedAppointments[i].confirmed = true;
-            result = storedAppointments[i];
+            if(storedAppointments[i].patient_id === patient_id){
+                storedAppointments[i].confirmed = true;
+                result = storedAppointments[i];
+            }
         }
     }
     return result;

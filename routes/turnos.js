@@ -53,7 +53,7 @@ router.post('/:appointmentId/confirm', function(req, res, next) {
             "error": "invalid_request"
         });
     }
-    var confirm = mocks.confirmAppointment(req.params.appointmentId);
+    var confirm = mocks.confirmAppointment(parseInt(req.params.appointmentId), parseInt(req.body.patient_id));
     if (!confirm) {
         return next({
             "error_description": "appointment could not be confirm",
