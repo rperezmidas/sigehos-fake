@@ -1,5 +1,6 @@
 'use strict';
 var pat = require('./mocksPacientes').listaPacientes.results;
+var otros = require('./mocksPacientes').otrosPat;
 var appointmentCount = 1;
 var storedAppointments = [];
 var especiality = {
@@ -44,6 +45,10 @@ var AppointmentCreation = function () {
     for (var i = 0; i < 50; i++) {
         storedAppointments.push(new AppointmentCreation().appointment);
     }
+    for(var i = 0 ; i < otros.length; i++){
+        patients_id.push(otros[i]);
+        pat.push(otros[i]);
+    }
 })();
 
 var searchAppointmentBySpeciality = function (speciality) {
@@ -87,7 +92,7 @@ var searchUnUsedAppointment = () => {
 
 var createAppointmentForPatient = (patientId) => {
     for (var i = 0; i < patients_id.length; i++) {
-        if (patients_id[i] === patientId) {
+        if (patients_id[i].id === patientId) {
             var appo = searchUnUsedAppointment();
             if (appo) {
                 appo.patient_id = patientId;
@@ -101,7 +106,9 @@ var createAppointmentForPatient = (patientId) => {
 var createAppointmentForPatientByAppId = (appId, patientId) => {
     for (var i = 0; i < patients_id.length; i++) {
         if (patients_id[i] === patientId) {
-            var appo = findById(appId);
+            console.log(patients_id[i]);
+            console.log(patientId);
+            var appo = searchAppointmentById(appId);
             if (appo) {
                 appo.patient_id = patientId;
                 return appo;
@@ -135,14 +142,25 @@ var searchAppointmentById = function (id) {
     return result;
 };
 
+var searchUnUsedAppointmentBySpeciality = (esp) => {
+    var result = [];
+    for(var i = 0 ; i < storedAppointments.length; i++){
+        if(!storedAppointments[i].patient_id && storedAppointments[i].speciality === esp){
+            result.push(storedAppointments[i]);
+        }
+    }
+    return result;
+};
+
 
 module.exports = {
-    getAppointments: storedAppointments,
-    findBySpeciality: searchAppointmentBySpeciality,
-    findBySpecialityAndPatient: searchAppointmentBySpecialityAndPatient,
-    findByPatientId: searchAppointmentByPatientId,
-    findById: searchAppointmentById,
-    createAppointment: createAppointmentForPatient,
-    createAppointmentByApp: createAppointmentForPatientByAppId,
-    confirmAppointment: confirmedAppointment
-}
+    getAppointments : storedAppointments,
+    findBySpeciality : searchAppointmentBySpeciality,
+    findBySpecialityAndPatient : searchAppointmentBySpecialityAndPatient,
+    findByPatientId : searchAppointmentByPatientId,
+    findById : searchAppointmentById,
+    createAppointment : createAppointmentForPatient,
+    createAppointmentByApp : createAppointmentForPatientByAppId,
+    confirmAppointment : confirmedAppointment,
+    unsusedBySpeciality : searchUnUsedAppointmentBySpeciality
+};
