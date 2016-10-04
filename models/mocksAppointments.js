@@ -105,9 +105,9 @@ var createAppointmentForPatient = (patientId) => {
 
 var createAppointmentForPatientByAppId = (appId, patientId) => {
     for (var i = 0; i < patients_id.length; i++) {
-        if (patients_id[i] === patientId) {
-            console.log(patients_id[i]);
-            console.log(patientId);
+        console.log(patients_id[i].id);
+        console.log(patientId);
+        if (patients_id[i].id === patientId) {
             var appo = searchAppointmentById(appId);
             if (appo) {
                 appo.patient_id = patientId;
