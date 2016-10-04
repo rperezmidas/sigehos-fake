@@ -2,64 +2,73 @@
 var pat = require('./mocksPacientes').listaPacientes.results;
 var appointmentCount = 1;
 var storedAppointments = [];
-var especiality = {1 : 'Consultorio', 2 : 'Estudios', 3 :'Laboratorio', 4 : 'Farmacia', 5 : 'Vacunatorio', 6 :'Enfermería', 7: 'Dación de Leche'};
+var especiality = {
+    1: 'Consultorio',
+    2: 'Estudios',
+    3: 'Laboratorio',
+    4: 'Farmacia',
+    5: 'Vacunatorio',
+    6: 'Enfermería',
+    7: 'Dación de Leche'
+};
 
 var patients_id = [];
-for(var i = 0 ; i < pat.length ; i++){
+for (var i = 0; i < pat.length; i++) {
     patients_id.push(pat[i].id);
-};
+}
+;
 
-var Appointment = function() {
+var Appointment = function () {
     this.appointment = {
-        id : appointmentCount ++,
-        creation_date : new Date().toISOString(),
-        confirmed : false,
-        speciality : especiality[Math.round(Math.random()*6)+1 ],
-        patient_id : patients_id[Math.round(Math.random()*patients_id.length)]
+        id: appointmentCount++,
+        creation_date: new Date().toISOString(),
+        confirmed: false,
+        speciality: especiality[Math.round(Math.random() * 6) + 1],
+        patient_id: patients_id[Math.round(Math.random() * patients_id.length)]
     }
 };
 
-var AppointmentCreation = function() {
+var AppointmentCreation = function () {
     this.appointment = {
-        id : appointmentCount ++,
-        creation_date : new Date().toISOString(),
-        confirmed : false,
-        speciality : especiality[Math.round(Math.random()*6)+1 ],
+        id: appointmentCount++,
+        creation_date: new Date().toISOString(),
+        confirmed: false,
+        speciality: especiality[Math.round(Math.random() * 6) + 1],
     }
 };
 
-(() =>{
-    for(var i = 0 ; i < 100; i++){
-        storedAppointments.push (new Appointment().appointment);
+(() => {
+    for (var i = 0; i < 100; i++) {
+        storedAppointments.push(new Appointment().appointment);
     }
-    for(var i = 0 ; i < 50; i++){
-        storedAppointments.push (new AppointmentCreation().appointment);
+    for (var i = 0; i < 50; i++) {
+        storedAppointments.push(new AppointmentCreation().appointment);
     }
 })();
 
-var searchAppointmentBySpeciality  = function(speciality){
+var searchAppointmentBySpeciality = function (speciality) {
     var patApp = [];
-    for(var i = 0 ; i < storedAppointments.length; i++){
-        if(storedAppointments[i].speciality === speciality && storedAppointments[i].patient_id){
+    for (var i = 0; i < storedAppointments.length; i++) {
+        if (storedAppointments[i].speciality === speciality && storedAppointments[i].patient_id) {
             patApp.push(storedAppointments[i]);
         }
     }
     return patApp;
 };
-var searchAppointmentBySpecialityAndPatient  = function(speciality, patient){
+var searchAppointmentBySpecialityAndPatient = function (speciality, patient) {
     var patApp = [];
-    for(var i = 0 ; i < storedAppointments.length; i++){
-        if(storedAppointments[i].speciality === speciality && patient === storedAppointments[i].patient_id){
+    for (var i = 0; i < storedAppointments.length; i++) {
+        if (storedAppointments[i].speciality === speciality && patient === storedAppointments[i].patient_id) {
             patApp.push(storedAppointments[i]);
         }
     }
     return patApp;
 };
 
-var searchAppointmentByPatientId  = function(patientId){
+var searchAppointmentByPatientId = function (patientId) {
     var patApp = [];
-    for(var i = 0 ; i < storedAppointments.length; i++){
-        if(storedAppointments[i].patient_id === patientId){
+    for (var i = 0; i < storedAppointments.length; i++) {
+        if (storedAppointments[i].patient_id === patientId) {
             patApp.push(storedAppointments[i]);
         }
     }
@@ -68,8 +77,8 @@ var searchAppointmentByPatientId  = function(patientId){
 
 var searchUnUsedAppointment = () => {
     var result = null;
-    for(var i = 0 ; i < storedAppointments.length; i++){
-        if(!storedAppointments[i].patient_id){
+    for (var i = 0; i < storedAppointments.length; i++) {
+        if (!storedAppointments[i].patient_id) {
             result = storedAppointments[i];
         }
     }
@@ -77,10 +86,10 @@ var searchUnUsedAppointment = () => {
 }
 
 var createAppointmentForPatient = (patientId) => {
-    for(var i = 0 ; i < patients_id.length; i++){
-        if(patients_id[i] === patientId){
+    for (var i = 0; i < patients_id.length; i++) {
+        if (patients_id[i] === patientId) {
             var appo = searchUnUsedAppointment();
-            if(appo){
+            if (appo) {
                 appo.patient_id = patientId;
                 return appo;
             }
@@ -90,10 +99,10 @@ var createAppointmentForPatient = (patientId) => {
 };
 
 var createAppointmentForPatientByAppId = (appId, patientId) => {
-    for(var i = 0 ; i < patients_id.length; i++){
-        if(patients_id[i] === patientId){
+    for (var i = 0; i < patients_id.length; i++) {
+        if (patients_id[i] === patientId) {
             var appo = findById(appId);
-            if(appo){
+            if (appo) {
                 appo.patient_id = patientId;
                 return appo;
             }
@@ -102,23 +111,23 @@ var createAppointmentForPatientByAppId = (appId, patientId) => {
     return null;
 };
 
-var confirmedAppointment = (id,patient_id) => {
+var confirmedAppointment = (id) => {
     var result = null;
-    for(var i = 0 ; i < storedAppointments.length; i++){
-        if(storedAppointments[i].id === id){
-            if(storedAppointments[i].patient_id === patient_id){
-                storedAppointments[i].confirmed = true;
-                result = storedAppointments[i];
-            }
+    for (var i = 0; i < storedAppointments.length; i++) {
+        console.log(id);
+        console.log(storedAppointments[i].id);
+        if (storedAppointments[i].id === id) {
+            storedAppointments[i].confirmed = true;
+            result = storedAppointments[i];
         }
     }
     return result;
 };
 
-var searchAppointmentById  = function(id){
+var searchAppointmentById = function (id) {
     var result = null;
-    for(var i = 0 ; i < storedAppointments.length; i++){
-        if(storedAppointments[i].id === id){
+    for (var i = 0; i < storedAppointments.length; i++) {
+        if (storedAppointments[i].id === id) {
 
             result = storedAppointments[i];
         }
@@ -128,12 +137,12 @@ var searchAppointmentById  = function(id){
 
 
 module.exports = {
-    getAppointments : storedAppointments,
-    findBySpeciality : searchAppointmentBySpeciality,
-    findBySpecialityAndPatient : searchAppointmentBySpecialityAndPatient,
-    findByPatientId : searchAppointmentByPatientId,
-    findById : searchAppointmentById,
-    createAppointment : createAppointmentForPatient,
-    createAppointmentByApp : createAppointmentForPatientByAppId,
-    confirmAppointment : confirmedAppointment
+    getAppointments: storedAppointments,
+    findBySpeciality: searchAppointmentBySpeciality,
+    findBySpecialityAndPatient: searchAppointmentBySpecialityAndPatient,
+    findByPatientId: searchAppointmentByPatientId,
+    findById: searchAppointmentById,
+    createAppointment: createAppointmentForPatient,
+    createAppointmentByApp: createAppointmentForPatientByAppId,
+    confirmAppointment: confirmedAppointment
 }

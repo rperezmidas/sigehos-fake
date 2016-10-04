@@ -34,6 +34,12 @@ router.get('/:appointmentId', function(req, res, next) {
 });
 
 router.put('/:appointmentId', function(req, res, next) {
+    if (!req.body) {
+        next({
+            "error_description": "body can not be null",
+            "error": "invalid_request"
+        });
+    }
     var response = mocks.createAppointmentByApp(req.params.appointmentId, req.body.patientId);
     if (!response) {
         return next({
@@ -47,13 +53,7 @@ router.put('/:appointmentId', function(req, res, next) {
 });
 
 router.post('/:appointmentId/confirm', function(req, res, next) {
-    if (!req.body) {
-        next({
-            "error_description": "body can not be null",
-            "error": "invalid_request"
-        });
-    }
-    var confirm = mocks.confirmAppointment(parseInt(req.params.appointmentId), parseInt(req.body.patient_id));
+    var confirm = mocks.confirmAppointment(parseInt(req.params.appointmentId));
     if (!confirm) {
         return next({
             "error_description": "appointment could not be confirm",
