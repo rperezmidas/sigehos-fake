@@ -30,7 +30,7 @@ router.get('/:appointmentId', function(req, res, next) {
 });
 
 router.put('/:appointmentId', function(req, res, next) {
-    var response = mocks.createAppointment(req.body.patientId);
+    var response = mocks.createAppointmentByApp(req.params.appointmentId, req.body.patientId);
     if (!response) {
         return next({
             "error_description": "error sigehos communication.",
