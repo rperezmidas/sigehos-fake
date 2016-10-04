@@ -133,5 +133,5 @@ module.exports = {
     findById : searchAppointmentById,
     createAppointment : createAppointmentForPatient,
     createAppointmentByApp : createAppointmentForPatientByAppId,
-    confirmAppointment : confirmAppointment
+    confirmAppointment : confirmedAppointment
 }
