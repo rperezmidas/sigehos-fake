@@ -13,7 +13,7 @@ var Appointment = function() {
     this.appointment = {
         id : appointmentCount ++,
         creation_date : new Date().toISOString(),
-        confirm : false,
+        confirmed : false,
         speciality : especiality[Math.round(Math.random()*6)+1 ],
         patient_id : patients_id[Math.round(Math.random()*patients_id.length)]
     }
@@ -23,7 +23,7 @@ var AppointmentCreation = function() {
     this.appointment = {
         id : appointmentCount ++,
         creation_date : new Date().toISOString(),
-        confirm : false,
+        confirmed : false,
         speciality : especiality[Math.round(Math.random()*6)+1 ],
     }
 };
@@ -102,11 +102,11 @@ var createAppointmentForPatientByAppId = (appId, patientId) => {
     return null;
 };
 
-var confirmAppointment = (id) => {
+var confirmedAppointment = (id) => {
     var result = null;
     for(var i = 0 ; i < storedAppointments.length; i++){
         if(storedAppointments[i].id === id){
-            storedAppointments[i].confirm = true;
+            storedAppointments[i].confirmed = true;
             result = storedAppointments[i];
         }
     }
