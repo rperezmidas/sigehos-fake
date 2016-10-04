@@ -1,5 +1,6 @@
 'use strict';
 var pat = require('./mocksPacientes').listaPacientes.results;
+var otros = require('./mocksPacientes').otrosPat;
 var appointmentCount = 1;
 var storedAppointments = [];
 var especiality = {1 : 'Consultorio', 2 : 'Estudios', 3 :'Laboratorio', 4 : 'Farmacia', 5 : 'Vacunatorio', 6 :'Enfermería', 7: 'Dación de Leche'};
@@ -34,6 +35,10 @@ var AppointmentCreation = function() {
     }
     for(var i = 0 ; i < 50; i++){
         storedAppointments.push (new AppointmentCreation().appointment);
+    }
+    for(var i = 0 ; i < otros.length; i++){
+
+        pat.push(otros[i]);
     }
 })();
 
@@ -126,6 +131,16 @@ var searchAppointmentById  = function(id){
     return result;
 };
 
+var searchUnUsedAppointmentBySpeciality = (esp) => {
+    var result = [];
+    for(var i = 0 ; i < storedAppointments.length; i++){
+        if(!storedAppointments[i].patient_id && storedAppointments[i].speciality === esp){
+            result.push(storedAppointments[i]);
+        }
+    }
+    return result;
+}
+
 
 module.exports = {
     getAppointments : storedAppointments,
@@ -135,5 +150,6 @@ module.exports = {
     findById : searchAppointmentById,
     createAppointment : createAppointmentForPatient,
     createAppointmentByApp : createAppointmentForPatientByAppId,
-    confirmAppointment : confirmedAppointment
+    confirmAppointment : confirmedAppointment,
+    unsusedBySpeciality : searchUnUsedAppointmentBySpeciality
 }
